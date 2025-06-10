@@ -457,8 +457,10 @@ def get_erpnext_items(price_list):
           AND `tabItem`.`name` = `tabItem Price`.`item_code`
           AND `tabItem`.`sync_with_woocommerce` = 1 
           AND (`tabItem`.`disabled` IS NULL OR `tabItem`.`disabled` = 0) %s""" %(price_list, item_price_condition)
-    frappe.log_error("{0}".format(item_from_item_price))
-
+    frappe.log_error(
+    title="Item fetch failed from Item Price",
+    message="Query result or issue:\n{0}".format(item_from_item_price)
+    )
 
 
     updated_price_item_list = frappe.db.sql(item_from_item_price, as_dict=1)
