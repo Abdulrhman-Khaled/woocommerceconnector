@@ -156,11 +156,12 @@ def create_customer_contact(customer, woocommerce_customer):
                 "is_primary": 1
             })
             
-        # if woocommerce_customer["billing"]["phone"]:
-        #     new_contact.append("phone_nos", {
-        #         "phone": woocommerce_customer["billing"]["phone"],
-        #         "is_primary_phone": 1
-        #     })
+        if woocommerce_customer["billing"]["phone"]:
+            phone = convert_arabic_to_english_numbers(woocommerce_customer["billing"]["phone"])
+            new_contact.append("phone_nos", {
+                "phone": phone,
+                "is_primary_phone": 1
+            })
         new_contact.insert()
 
     except Exception as e:
@@ -173,3 +174,7 @@ def get_country_name(code):
     for _coutry_name in frappe.db.sql(coutry_names, as_dict=1):
         coutry_name = _coutry_name.country_name
     return coutry_name
+
+def convert_arabic_to_english_numbers(text):
+    arabic_to_english = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
+    return text.translate(arabic_to_english)
